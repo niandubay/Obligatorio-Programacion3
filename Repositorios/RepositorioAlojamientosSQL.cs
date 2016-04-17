@@ -53,7 +53,7 @@ namespace Repositorios
         public Alojamiento FindById(int id)
         {
             //string cadenaFind = "SELECT id,tipo,cupo_max FROM Alojamiento WHERE id=@id";
-            string cadenaFind = "SELECT Alojamiento.*, Ubicacion.ciudad, Ubicacion.barrio, Ubicacion.dirLinea1, Ubicacion.dirLinea2id,tipo,cupo_max FROM Alojamiento, Ubicacion WHERE Alojamiento.id_Ubicacion = Ubicacion.id AND Alojamiento.id = @id";
+            string cadenaFind = "SELECT Alojamiento.*, Ubicacion.ciudad, Ubicacion.barrio, Ubicacion.dirLinea1, Ubicacion.dirLinea2,tipo,cupo_max FROM Alojamiento, Ubicacion WHERE Alojamiento.id_Ubicacion = Ubicacion.id AND Alojamiento.id = @id";
             SqlConnection cn = BdSQL.Conectar();
             List<RangoPrecio> precios_temporada = new List<RangoPrecio>();
             Alojamiento unA = null;
@@ -68,6 +68,13 @@ namespace Repositorios
                 {
                     unA = new Alojamiento();
                     unA.Load(reader);
+                    unA.Ubicacion = new Ubicacion
+                    {
+                        Ciudad = reader["ciudad"].ToString(),
+                        Barrio = reader["barrio"].ToString(),
+                        DireccionLinea1 = reader["dirLinea1"].ToString(),
+                        DireccionLinea2 = reader["dirLinea2"].ToString()
+                    };
                 }
                 //Cargo los elementos de la lista de rango precios
                 cmd.CommandText = "SELECT * FROM RangoPrecio WHERE id_alojamiento = @id";
@@ -95,6 +102,7 @@ namespace Repositorios
             catch(Exception ex)
             {
                 //mostrar exception
+                BdSQL.LoguearError(ex.Message + "No se pudo cargar el Alojamiento");
                 unA.Precios_temporada = null;
                 return unA = null;
             }
