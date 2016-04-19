@@ -13,63 +13,37 @@ namespace Dominio.EntidadesNegocio
     {
         #region Properties
         public int Id { get; set; }
-        //public RolesSistema Tipo { get; set; }
+        public RolesSistema Tipo { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Rol VALUES ()";
-        private string cadenaUpdate = "UPDATE  Rol SET WHERE id = @id";
-        private string cadenaDelete = "DELETE  Rol WHERE id = @id";
+        protected string cadenaInsert = "INSERT INTO Rol VALUES (@tipo); SELECT CAST(SCOPE_IDENTIY() AS INT);";
+        //private string cadenaUpdate = "UPDATE  Rol SET WHERE id = @id";
+        protected string cadenaDelete = "DELETE  Rol WHERE id = @id";
         #endregion
 
         #region Métodos ACTIVE RECORD
-        public bool Add()
-        {
-            if (this.Validar())
-            {
-                using (SqlConnection cn = BdSQL.Conectar())
-                {
-                    using (SqlCommand cmd = new SqlCommand(cadenaInsert, cn))
-                    {
-                        cn.Open();
-                        int afectadas = cmd.ExecuteNonQuery();
-                        return afectadas == 1;
-                    }
-                }
-            }
-            return false;
-        }
-        public bool Update()
-        {
-            if (this.Validar())
-            {
-                using (SqlConnection cn = BdSQL.Conectar())
-                {
-                    using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
-                    {
-                        cmd.Parameters.AddWithValue("@id", this.Id);
-                        cn.Open();
-                        int afectadas = cmd.ExecuteNonQuery();
-                        return afectadas == 1;
-                    }
-                }
-            }
-            return false;
-        }
-        public bool Delete()
-        {
-            using (SqlConnection cn = BdSQL.Conectar())
-            {
-                using (SqlCommand cmd = new SqlCommand(cadenaDelete, cn))
-                {
+        public abstract bool Add();
 
-                    cmd.Parameters.AddWithValue("@id", this.Id);
-                    cn.Open();
-                    int afectadas = cmd.ExecuteNonQuery();
-                    return afectadas == 1;
-                }
-            }
-        }
+        //public bool Update()
+        //{
+        //    if (this.Validar())
+        //    {
+        //        using (SqlConnection cn = BdSQL.Conectar())
+        //        {
+        //            using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
+        //            {
+        //                cmd.Parameters.AddWithValue("@id", this.Id);
+        //                cn.Open();
+        //                int afectadas = cmd.ExecuteNonQuery();
+        //                return afectadas == 1;
+        //            }
+        //        }
+        //    }
+        //    return false;
+        //}
+        //public abstract bool Delete();
+        
         public void Load(IDataRecord dr)
         {
             if (dr != null)
@@ -80,10 +54,7 @@ namespace Dominio.EntidadesNegocio
         #endregion
 
         #region Validaciones
-        public bool Validar() 
-        {
-            return this.Tipo.Length >= 3;
-        }
+        public abstract bool Validar();      
         #endregion
 
         #region Redefiniciones de object

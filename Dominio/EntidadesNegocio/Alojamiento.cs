@@ -57,22 +57,28 @@ namespace Dominio.EntidadesNegocio
                         cmd.ExecuteNonQuery();
                     }
                     // Agregar la ubicacion 
-                    
-                    cmd.CommandText = "INSERT INTO Ubicacion VALUES (@id_alojamiento,@ciudad,@barrio,@dirLinea1,@dirLinea2)";
+                    cmd.CommandText = "INSERT INTO Ubicacion VALUES (@ciudad,@barrio,@dirLinea1,@dirLinea2); SELECT CAST(SCOPE_IDENTIY() AS INT);";
                     cmd.Parameters.Clear();
-                    cmd.Parameters.AddWithValue("@id_alojamiento", idAlojamiento);
                     cmd.Parameters.AddWithValue("@ciudad", this.Ubicacion.Ciudad);
                     cmd.Parameters.AddWithValue("@barrio", this.Ubicacion.Barrio);
                     cmd.Parameters.AddWithValue("@dirLinea1", this.Ubicacion.DireccionLinea1);
                     cmd.Parameters.AddWithValue("@dirLinea2", this.Ubicacion.DireccionLinea2);
+                    // me guardo el id de la ubicación insertada
+                    int idUbicacion = Convert.ToInt32(cmd.ExecuteScalar());
+                    // me agrego como parametro esa ubicacion
+                    cmd.Parameters.AddWithValue("@idUbicacion", idUbicacion);
+                    // le hago un update al alojamiento con el idUbicacion(foreign key)..
+                    cmd.CommandText = "UPDATE Alojamiento SET idUbicacion = @idUbicacion WHERE idAlojamiento = @id_alojamiento;";
                     cmd.ExecuteNonQuery();
                     trn.Commit();
+                    cmd.Parameters.Clear();
                     return true;
 
                 }//fin del try
                 catch (Exception ex)
                 {
                     //falta hacer algo con la excepcion
+                    BdSQL.LoguearError(ex.Message + "No se pudo agregar el Alojamiento");
                     trn.Rollback();
                     return false;
 
@@ -80,6 +86,7 @@ namespace Dominio.EntidadesNegocio
                 finally
                 {
                     trn.Dispose();
+                    trn = null;
                     cn.Close();
                     cn.Dispose();
                 }
@@ -114,7 +121,6 @@ namespace Dominio.EntidadesNegocio
             {
                 using (SqlCommand cmd = new SqlCommand(cadenaDelete, cn))
                 {
-
                     cmd.Parameters.AddWithValue("@id", this.Id);
                     cn.Open();
                     int afectadas = cmd.ExecuteNonQuery();

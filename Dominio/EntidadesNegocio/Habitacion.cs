@@ -13,11 +13,11 @@ namespace Dominio.EntidadesNegocio
     {
         #region Properties
         public int Id { get; set; }
-        //public List<Servicio> Servicios { get; set; }
+        public List<Servicio> Servicios { get; set; }
         public bool Baño_Privado { get; set; }
         public int Camas { get; set; }
         public decimal Precio_base { get; set; }
-        //public Alojamiento Alojamiento { get; set; }
+        public Alojamiento Alojamiento { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD

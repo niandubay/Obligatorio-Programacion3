@@ -68,6 +68,13 @@ namespace Repositorios
                 {
                     unA = new Alojamiento();
                     unA.Load(reader);
+                    unA.Ubicacion = new Ubicacion
+                    {
+                        Ciudad = reader["ciudad"].ToString(),
+                        Barrio = reader["barrio"].ToString(),
+                        DireccionLinea1 = reader["dirLinea1"].ToString(),
+                        DireccionLinea2 = reader["dirLinea2"].ToString()
+                    };
                 }
                 //Cargo los elementos de la lista de rango precios
                 cmd.CommandText = "SELECT * FROM RangoPrecio WHERE id_alojamiento = @id";
@@ -95,6 +102,7 @@ namespace Repositorios
             catch(Exception ex)
             {
                 //mostrar exception
+                BdSQL.LoguearError(ex.Message + "No se pudo cargar el Alojamiento");
                 unA.Precios_temporada = null;
                 return unA = null;
             }

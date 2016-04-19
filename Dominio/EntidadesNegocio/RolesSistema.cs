@@ -18,8 +18,8 @@ namespace Dominio.EntidadesNegocio
 
         #region Cadenas de comando para ACTIVE RECORD
         private string cadenaInsert = "INSERT INTO RolesSistema VALUES (@nombre)";
-        private string cadenaUpdate = "UPDATE  RolesSistema SET nombre = @nombre WHERE id = @id";
-        private string cadenaDelete = "DELETE  RolesSistema WHERE id = @id";
+        //private string cadenaUpdate = "UPDATE  RolesSistema SET nombre = @nombre WHERE id = @id";
+        //private string cadenaDelete = "DELETE  RolesSistema WHERE id = @id";
         #endregion
 
         #region Métodos ACTIVE RECORD
@@ -40,38 +40,38 @@ namespace Dominio.EntidadesNegocio
             }
             return false;
         }
-        public bool Update()
-        {
-            if (this.Validar())
-            {
-                using (SqlConnection cn = BdSQL.Conectar())
-                {
-                    using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
-                    {
-                        cmd.Parameters.AddWithValue("@nombre", this.Nombre);
-                        cmd.Parameters.AddWithValue("@id", this.Id);
-                        cn.Open();
-                        int afectadas = cmd.ExecuteNonQuery();
-                        return afectadas == 1;
-                    }
-                }
-            }
-            return false;
-        }
-        public bool Delete()
-        {
-            using (SqlConnection cn = BdSQL.Conectar())
-            {
-                using (SqlCommand cmd = new SqlCommand(cadenaDelete, cn))
-                {
+        //public bool Update()
+        //{
+        //    if (this.Validar())
+        //    {
+        //        using (SqlConnection cn = BdSQL.Conectar())
+        //        {
+        //            using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
+        //            {
+        //                cmd.Parameters.AddWithValue("@nombre", this.Nombre);
+        //                cmd.Parameters.AddWithValue("@id", this.Id);
+        //                cn.Open();
+        //                int afectadas = cmd.ExecuteNonQuery();
+        //                return afectadas == 1;
+        //            }
+        //        }
+        //    }
+        //    return false;
+        //}
+        //public bool Delete()
+        //{
+        //    using (SqlConnection cn = BdSQL.Conectar())
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand(cadenaDelete, cn))
+        //        {
 
-                    cmd.Parameters.AddWithValue("@id", this.Id);
-                    cn.Open();
-                    int afectadas = cmd.ExecuteNonQuery();
-                    return afectadas == 1;
-                }
-            }
-        }
+        //            cmd.Parameters.AddWithValue("@id", this.Id);
+        //            cn.Open();
+        //            int afectadas = cmd.ExecuteNonQuery();
+        //            return afectadas == 1;
+        //        }
+        //    }
+        //}
         public void Load(IDataRecord dr)
         {
             if (dr != null)

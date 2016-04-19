@@ -59,11 +59,6 @@ namespace Repositorios
             return unaU;
         }
 
-        public bool Add(Ubicacion obj)
-        {
-            return obj != null && obj.Add();
-        }
-
         public bool Delete(int id)
         {
             Ubicacion u = this.FindById(id);
