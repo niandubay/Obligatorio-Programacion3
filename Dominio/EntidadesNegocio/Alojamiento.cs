@@ -19,7 +19,7 @@ namespace Dominio.EntidadesNegocio
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Alojamiento (tipo, cupo_max) VALUES (@tipo); SELECT CAST(SCOPE_IDENTIY() AS INT);";
+        private string cadenaInsert = "INSERT INTO Alojamiento (tipo) VALUES (@tipo); SELECT CAST(SCOPE_IDENTIY() AS INT);";
         private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo WHERE id=@id";
         private string cadenaDelete = "DELETE  Alojamiento WHERE id=@id";
         #endregion
@@ -156,7 +156,7 @@ namespace Dominio.EntidadesNegocio
         #region Redefiniciones de object
         public override string ToString()
         {
-            return this.Id + " - Tipo: " + this.Tipo + " - CupoMax: " + this.Cupo_max.ToString();
+            return this.Id + " - Tipo: " + this.Tipo ;
         }
         #endregion
     }

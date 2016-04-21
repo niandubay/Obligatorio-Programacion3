@@ -15,7 +15,7 @@ namespace Repositorios
     {
         public List<Ubicacion> FindAll()
         {
-            string cadenaFindAll = "SELECT ciudad, barrio, dirLinea1, dirLinea2 FROM Ubicacion";
+            string cadenaFindAll = "SELECT id, ciudad, barrio, dirLinea1, dirLinea2 FROM Ubicacion";
             List<Ubicacion> listaUbicaciones = new List<Ubicacion>();
             using (SqlConnection cn = BdSQL.Conectar())
             {

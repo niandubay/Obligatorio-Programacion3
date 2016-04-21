@@ -11,7 +11,7 @@ using Utilidades;
 
 namespace Repositorios
 {
-    public class RepositorioAnunciosSQL
+    public class RepositorioAnunciosSQL:IRepositorioAnuncios
     {
         public bool Add(Anuncio obj)
         {

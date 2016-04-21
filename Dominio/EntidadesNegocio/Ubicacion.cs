@@ -67,7 +67,7 @@ namespace Dominio.EntidadesNegocio
                 this.Ciudad = dr["ciudad"].ToString();
                 this.Barrio = dr["barrio"].ToString();
                 this.DireccionLinea1 = dr["dirLinea1"].ToString();
-                this.DireccionLinea1 = dr["dirLinea2"].ToString();
+                this.DireccionLinea2 = dr["dirLinea2"].ToString();
                 this.Id = Convert.ToInt32(dr["id"]);
             }
         }

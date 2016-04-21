@@ -15,7 +15,7 @@ namespace Repositorios
     {
         public List<RangoPrecio> FindAll()
         {
-            string cadenaFindAll = "SELECT @fecha_inicio, fecha_fin, variacion_precio FROM RangoPrecio";
+            string cadenaFindAll = "SELECT id ,fecha_ini, fecha_fin, variacion_precio FROM RangoPrecio";
             List<RangoPrecio> listaRangos = new List<RangoPrecio>();
             using (SqlConnection cn = BdSQL.Conectar())
             {

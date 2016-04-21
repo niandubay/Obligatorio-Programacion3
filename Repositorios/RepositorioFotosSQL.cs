@@ -61,19 +61,22 @@ namespace Repositorios
 
         public bool Add(Foto obj)
         {
-            return obj != null && obj.Add();
+            //return obj != null && obj.Add();
+            return false;
         }
 
         public bool Delete(int id)
         {
             Foto f = this.FindById(id);
-            return (f != null && f.Delete());
+            //return (f != null && f.Delete());
+            return false;
 
         }
 
         public bool Update(Foto obj)
         {
-            return obj != null && obj.Update();
+            //return obj != null && obj.Update();
+            return false;
         }
     }
 }

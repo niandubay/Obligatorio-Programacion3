@@ -9,12 +9,12 @@ using System.Data.SqlClient;
 
 namespace Dominio.EntidadesNegocio
 {
-    public class RangoFechas
+    public class RangoFechas:IEntity
     {
         #region Properties
         public DateTime Fecha_ini { get; set; }
         public DateTime Fecha_fin { get; set; }
-        //public int Id { get; set; }
+        public int Id { get; set; }//HAY QUE QUITARLO
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
