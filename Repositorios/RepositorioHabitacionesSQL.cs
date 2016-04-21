@@ -27,7 +27,8 @@ namespace Repositorios
 
         public List<Habitacion> FindAll()
         {
-            string cadenaFindAll = "SELECT id,tipo,cupo_max FROM Habitacion";
+            // estaría faltando los servicios...
+            string cadenaFindAll = "SELECT id,banio_privado,camas,cupo_max,precio_base FROM Habitacion";
             List<Habitacion> listaHabitaciones = new List<Habitacion>();
             using (SqlConnection cn = BdSQL.Conectar())
             {
@@ -52,8 +53,9 @@ namespace Repositorios
 
         public Habitacion FindById(int id)
         {
-            string cadenaFind = "SELECT id,baño_privado,camas,precio_base FROM Habitacion WHERE id=@id";
+            string cadenaFind = "SELECT id,banio_privado,camas,cupo_max,precio_base FROM Habitacion WHERE id=@id";
             Habitacion h = null;
+            List<Servicio> listaServicios = new List<Servicio>();
             using (SqlConnection cn = BdSQL.Conectar())
             {
                 using (SqlCommand cmd = new SqlCommand(cadenaFind, cn))
@@ -65,6 +67,21 @@ namespace Repositorios
                     {
                         h = new Habitacion();
                         h.Load(reader);
+                        cmd.CommandText = "SELECT id_alojamiento FROM Habitacion WHERE id=@id";
+                        SqlDataReader readerAlojamiento = cmd.ExecuteReader();
+                        if (readerAlojamiento != null && readerAlojamiento.Read())
+                        {
+                            Alojamiento unA = new RepositorioAlojamientosSQL().FindById(Convert.ToInt32(readerAlojamiento["id_alojamiento"].ToString()));
+                            h.Alojamiento = unA;
+                        }
+                        cmd.CommandText = "SELECT id_servicio FROM ServiciosHabitacion WHERE id_habitacion=@id";
+                        SqlDataReader readerServicios = cmd.ExecuteReader();
+                        while (readerServicios.Read())
+                        {
+                            Servicio unS = new RepositorioServiciosSQL().FindById(Convert.ToInt32(readerServicios["id_servicio"].ToString()));
+                            listaServicios.Add(unS);
+                        }
+                        h.Servicios = listaServicios;
                     }
                 }
             }

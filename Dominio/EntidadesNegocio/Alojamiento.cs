@@ -14,14 +14,13 @@ namespace Dominio.EntidadesNegocio
         #region Properties
         public int Id { get; set; }
         public string Tipo { get; set; }
-        public int Cupo_max { get; set; }
         public Ubicacion Ubicacion { get; set;}
         public List<RangoPrecio> Precios_temporada { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Alojamiento VALUES (@tipo,@cupo_max); SELECT CAST(SCOPE_IDENTIY() AS INT);";
-        private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo, cupo_max=@cupo_max WHERE id=@id";
+        private string cadenaInsert = "INSERT INTO Alojamiento (tipo, cupo_max) VALUES (@tipo); SELECT CAST(SCOPE_IDENTIY() AS INT);";
+        private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo WHERE id=@id";
         private string cadenaDelete = "DELETE  Alojamiento WHERE id=@id";
         #endregion
 
@@ -38,14 +37,14 @@ namespace Dominio.EntidadesNegocio
 
                     // acá va el resto de parametros que vamos a insertar...
                     cmd.Parameters.AddWithValue("@tipo", this.Tipo);
-                    cmd.Parameters.AddWithValue("@cupo_max", this.Cupo_max);
                     //abrimos la coneccion
                     cn.Open();
+
                     //iniciamos la transaccion
                     trn = cn.BeginTransaction();
                     cmd.Transaction = trn;
                     int idAlojamiento = Convert.ToInt32(cmd.ExecuteScalar());
-                    cmd.CommandText = "INSERT INTO RangoPrecio VALUES (@fecha_inicio,@fecha_fin,@variacion_precio,@id_alojamiento)";
+                    cmd.CommandText = "INSERT INTO RangoPrecio (fecha_inicio,fecha_fin,variacion_precio,id_alojamiento) VALUES (@fecha_inicio,@fecha_fin,@variacion_precio,@id_alojamiento)";
                     foreach (RangoPrecio unR in this.Precios_temporada)
                     {
                         cmd.Parameters.Clear();
@@ -56,9 +55,8 @@ namespace Dominio.EntidadesNegocio
                         cmd.ExecuteNonQuery();
                     }
                     // Agregar la ubicacion 
-                    cmd.CommandText = "INSERT INTO Ubicacion VALUES (@ciudad,@barrio,@dirLinea1,@dirLinea2); SELECT CAST(SCOPE_IDENTIY() AS INT);";
+                    cmd.CommandText = "INSERT INTO Ubicacion (ciudad,barrio,dir_linea1,dir_linea2) VALUES (@ciudad,@barrio,@dirLinea1,@dirLinea2); SELECT CAST(SCOPE_IDENTIY() AS INT);";
                     cmd.Parameters.Clear();
-                    //cmd.Parameters.AddWithValue("@id_alojamiento", idAlojamiento);
                     cmd.Parameters.AddWithValue("@ciudad", this.Ubicacion.Ciudad);
                     cmd.Parameters.AddWithValue("@barrio", this.Ubicacion.Barrio);
                     cmd.Parameters.AddWithValue("@dirLinea1", this.Ubicacion.DireccionLinea1);
@@ -78,6 +76,7 @@ namespace Dominio.EntidadesNegocio
                 catch (Exception ex)
                 {
                     //falta hacer algo con la excepcion
+                    BdSQL.LoguearError(ex.Message + "No se pudo agregar el Alojamiento");
                     trn.Rollback();
                     return false;
 
@@ -104,7 +103,7 @@ namespace Dominio.EntidadesNegocio
                     using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
                     {
                         cmd.Parameters.AddWithValue("@tipo", this.Tipo);
-                        cmd.Parameters.AddWithValue("@cupo_max", this.Cupo_max);
+                        //cmd.Parameters.AddWithValue("@cupo_max", this.Cupo_max);
                         cmd.Parameters.AddWithValue("@id", this.Id);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
@@ -120,7 +119,6 @@ namespace Dominio.EntidadesNegocio
             {
                 using (SqlCommand cmd = new SqlCommand(cadenaDelete, cn))
                 {
-
                     cmd.Parameters.AddWithValue("@id", this.Id);
                     cn.Open();
                     int afectadas = cmd.ExecuteNonQuery();
@@ -134,7 +132,6 @@ namespace Dominio.EntidadesNegocio
             {
                 this.Tipo = dr["tipo"].ToString();
                 this.Id = Convert.ToInt32(dr["id"]);
-                this.Cupo_max = Convert.ToInt32(dr["cupo_max"]);
             }
         }
         public void loadRangoPrecio(RangoPrecio unR, IDataRecord dr)

@@ -54,6 +54,10 @@ namespace Repositorios
         {
             string cadenaFind = "SELECT id,publicado,nombre,descripcion FROM Anuncio WHERE id=@id";
             Anuncio a = null;
+            List<Habitacion> lista_habitaciones = new List<Habitacion>();
+            List<Foto> lista_fotos = new List<Foto>();
+            List<RangoFechas> lista_rangos = new List<RangoFechas>();
+
             using (SqlConnection cn = BdSQL.Conectar())
             {
                 using (SqlCommand cmd = new SqlCommand(cadenaFind, cn))
@@ -65,15 +69,47 @@ namespace Repositorios
                     {
                         a = new Anuncio();
                         a.Load(reader);
+
+                        cmd.CommandText = "SELECT id_habitacion FROM HabitacionesAnuncio WHERE id_anuncio = @id";
+                        SqlDataReader readerHabitaciones = cmd.ExecuteReader();                     
+                        while (readerHabitaciones.Read())
+                        {
+                            Habitacion unaH = new RepositorioHabitacionesSQL().FindById(Convert.ToInt32(readerHabitaciones["id_habitacion"].ToString()));
+                            lista_habitaciones.Add(unaH);
+                        }
+                        cmd.CommandText = "SELECT ruta FROM Foto WHERE id_anuncio = @id";
+                        SqlDataReader readerFotos = cmd.ExecuteReader();
+                        while (readerFotos.Read())
+                        {
+                            Foto unaF = new Foto
+                            {
+                                Ruta = readerFotos["ruta"].ToString()
+                            };
+                            lista_fotos.Add(unaF);  
+                        }
+                        cmd.CommandText = "SELECT fecha_ini,fecha_fin FROM RangoFechaAnuncio WHERE id_anuncio = @id";
+                        SqlDataReader readerFechas = cmd.ExecuteReader();
+                        while (readerFechas.Read())
+                        {
+                            RangoFechas unR = new RangoFechas
+                            {
+                                Fecha_ini = Convert.ToDateTime(readerFechas["fecha_ini"].ToString()),
+                                Fecha_fin = Convert.ToDateTime(readerFechas["fecha_fin"].ToString())
+                            };
+                            lista_rangos.Add(unR);
+                        }
+                        a.Habitaciones = lista_habitaciones;
+                        a.ListaRangos = lista_rangos;
+                        a.Fotos = lista_fotos;
                     }
                 }
             }
             return a;
         }
 
-        public bool Update(Anuncio obj)
-        {
-            return obj != null && obj.Update();
-        }
+        //public bool Update(Anuncio obj)
+        //{
+        //    return obj != null && obj.Update();
+        //}
     }
 }

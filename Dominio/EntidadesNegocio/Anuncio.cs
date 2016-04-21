@@ -9,22 +9,22 @@ using System.Data.SqlClient;
 
 namespace Dominio.EntidadesNegocio
 {
-    public class Anuncio:IEntity
+    public class Anuncio : IEntity
     {
         #region Properties
         public int Id { get; set; }
-        public bool Publicado { get; set;}
-        //public List<Habitacion> Habitaciones { get; set; }
+        public bool Publicado { get; set; }
+        public List<Habitacion> Habitaciones { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
-        //public List<Foto> Fotos { get; set; }
-        //public List<RangoFechas> ListaRangos { get; set; }
+        public List<Foto> Fotos { get; set; }
+        public List<RangoFechas> ListaRangos { get; set; }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Anuncio VALUES (@publicado,@nombre,@descripcion)";
-        private string cadenaUpdate = "UPDATE  Anuncio SET publicado = @publicado, nombre = @nombre, descripcion = @descripcion WHERE id = @id";
-        private string cadenaDelete = "DELETE  Anuncio WHERE id = @id";
+        private string cadenaInsert = "INSERT INTO Anuncio VALUES (@publicado,@nombre,@descripcion); SELECT CAST(SCOPE_IDENTIY() AS INT);";
+        //private string cadenaUpdate = "UPDATE  Anuncio SET publicado = @publicado, nombre = @nombre, descripcion = @descripcion WHERE id = @id";
+        private string cadenaDelete = "DELETE  Anuncio WHERE id = @id;";
         #endregion
 
         #region Métodos ACTIVE RECORD
@@ -32,41 +32,84 @@ namespace Dominio.EntidadesNegocio
         {
             if (this.Validar())
             {
-                using (SqlConnection cn = BdSQL.Conectar())
+                SqlConnection cn = BdSQL.Conectar();
+                SqlTransaction trn = null;
+                try
                 {
-                    using (SqlCommand cmd = new SqlCommand(cadenaInsert, cn))
+                    SqlCommand cmd = new SqlCommand(cadenaInsert, cn);
+                    cmd.Parameters.AddWithValue("@publicado", this.Publicado);
+                    cmd.Parameters.AddWithValue("@nombre", this.Nombre);
+                    cmd.Parameters.AddWithValue("@descripcion", this.Descripcion);
+                    cn.Open();
+                    int idAnuncio = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.CommandText = "INSERT INTO HabitacionesAnuncio (id_anuncio,id_habitacion)VALUES (@id_Anuncio,@id_Habitacion)";
+                    foreach (Habitacion unaH in this.Habitaciones)
                     {
-                        cmd.Parameters.AddWithValue("@publicado", this.Publicado);
-                        cmd.Parameters.AddWithValue("@nombre", this.Nombre);
-                        cmd.Parameters.AddWithValue("@descripcion", this.Descripcion);
-                        cn.Open();
-                        int afectadas = cmd.ExecuteNonQuery();
-                        return afectadas == 1;
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@id_Anuncio", idAnuncio);
+                        cmd.Parameters.AddWithValue("@id_Habitacion", unaH.Id);
+                        cmd.ExecuteNonQuery();
                     }
+                    // acá tenemos el Anuncio y su lista de habitaciones...
+                    cmd.CommandText = "INSERT INTO Foto (ruta,id_anuncio) VALUES (@ruta,@id_Anuncio)";
+                    foreach (Foto unaF in this.Fotos){
+                        cmd.Parameters.AddWithValue("@ruta", unaF.Ruta);
+                        cmd.ExecuteNonQuery();
+                    }
+                    // acá ya tenemos también guardadas las fotos...
+                    cmd.CommandText = "INSERT INTO RangoFechaAnuncio (fecha_ini,fecha_fin,id_anuncio) VALUES (@fecha_ini,@fecha_fin,@id_Anuncio)";
+                    foreach (RangoFechas unRF in this.ListaRangos)
+                    {
+                        cmd.Parameters.AddWithValue("@fecha_ini", unRF.Fecha_ini);
+                        cmd.Parameters.AddWithValue("@fecha_fin", unRF.Fecha_fin);
+                        cmd.ExecuteNonQuery();
+                    }
+                    trn.Commit();
+                    cmd.Parameters.Clear();
+                    return true;
+                }//fin del try
+                catch (Exception ex)
+                {
+                    //falta hacer algo con la excepcion
+                    BdSQL.LoguearError(ex.Message + "No se pudo agregar el Anuncio");
+                    trn.Rollback();
+                    return false;
+
+                }//fin del catch
+                finally
+                {
+                    trn.Dispose();
+                    trn = null;
+                    cn.Close();
+                    cn.Dispose();
                 }
             }
-            return false;
-        }
-        public bool Update()
-        {
-            if (this.Validar())
+            else
             {
-                using (SqlConnection cn = BdSQL.Conectar())
-                {
-                    using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
-                    {
-                        cmd.Parameters.AddWithValue("@publicado", this.Publicado);
-                        cmd.Parameters.AddWithValue("@nombre", this.Nombre);
-                        cmd.Parameters.AddWithValue("@descripcion", this.Descripcion);
-                        cmd.Parameters.AddWithValue("@id", this.Id);
-                        cn.Open();
-                        int afectadas = cmd.ExecuteNonQuery();
-                        return afectadas == 1;
-                    }
-                }
+                return false;
             }
-            return false;
+
         }
+        //public bool Update()
+        //{
+        //    if (this.Validar())
+        //    {
+        //        using (SqlConnection cn = BdSQL.Conectar())
+        //        {
+        //            using (SqlCommand cmd = new SqlCommand(cadenaUpdate, cn))
+        //            {
+        //                cmd.Parameters.AddWithValue("@publicado", this.Publicado);
+        //                cmd.Parameters.AddWithValue("@nombre", this.Nombre);
+        //                cmd.Parameters.AddWithValue("@descripcion", this.Descripcion);
+        //                cmd.Parameters.AddWithValue("@id", this.Id);
+        //                cn.Open();
+        //                int afectadas = cmd.ExecuteNonQuery();
+        //                return afectadas == 1;
+        //            }
+        //        }
+        //    }
+        //    return false;
+        //}
         public bool Delete()
         {
             using (SqlConnection cn = BdSQL.Conectar())

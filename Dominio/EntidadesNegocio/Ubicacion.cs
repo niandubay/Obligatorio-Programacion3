@@ -17,7 +17,7 @@ namespace Dominio.EntidadesNegocio
         public string DireccionLinea1 { get; set; }
         public string DireccionLinea2 { get; set; }
         public int Id { get; set; }
-            #endregion
+        #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
         private string cadenaUpdate = "UPDATE  Ubicacion SET ciudad = @ciudad, barrio = @barrio, dirLinea1 = @dirLinea1, dirLinea2 = @dirLinea2 WHERE id = @id";
@@ -53,7 +53,7 @@ namespace Dominio.EntidadesNegocio
                 using (SqlCommand cmd = new SqlCommand(cadenaDelete, cn))
                 {
 
-                    cmd.Parameters.AddWithValue("@id", this.Id);
+                    cmd.Parameters.AddWithValue("@id_alojamiento", this.Id);
                     cn.Open();
                     int afectadas = cmd.ExecuteNonQuery();
                     return afectadas == 1;

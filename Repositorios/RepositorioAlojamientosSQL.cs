@@ -53,7 +53,7 @@ namespace Repositorios
         public Alojamiento FindById(int id)
         {
             //string cadenaFind = "SELECT id,tipo,cupo_max FROM Alojamiento WHERE id=@id";
-            string cadenaFind = "SELECT Alojamiento.*, Ubicacion.ciudad, Ubicacion.barrio, Ubicacion.dirLinea1, Ubicacion.dirLinea2,tipo,cupo_max FROM Alojamiento, Ubicacion WHERE Alojamiento.id_Ubicacion = Ubicacion.id AND Alojamiento.id = @id";
+            string cadenaFind = "SELECT Alojamiento.*, Ubicacion.ciudad, Ubicacion.barrio, Ubicacion.dirLinea1, Ubicacion.dirLinea2id,tipo,cupo_max FROM Alojamiento, Ubicacion WHERE Alojamiento.id_Ubicacion = Ubicacion.id AND Alojamiento.id = @id";
             SqlConnection cn = BdSQL.Conectar();
             List<RangoPrecio> precios_temporada = new List<RangoPrecio>();
             Alojamiento unA = null;
