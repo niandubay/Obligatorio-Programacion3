@@ -11,7 +11,7 @@ using Utilidades;
 
 namespace Repositorios
 {
-    public class RepositorioAlojamientosSQL
+    public class RepositorioAlojamientosSQL : IRepositorioAlojamientos
     {
         public bool Add(Alojamiento obj)
         {
@@ -27,7 +27,7 @@ namespace Repositorios
 
         public List<Alojamiento> FindAll()
         {
-            string cadenaFindAll = "SELECT id,tipo,cupo_max FROM Alojamiento";
+            string cadenaFindAll = "SELECT id,tipo FROM Alojamiento";
             List<Alojamiento> listaAlojamientos = new List<Alojamiento>();
             using (SqlConnection cn = BdSQL.Conectar())
             {

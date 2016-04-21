@@ -9,10 +9,10 @@ using System.Data.SqlClient;
 
 namespace Dominio.EntidadesNegocio
 {
-    public class Foto
+    public class Foto : IEntity
     {
         #region Properties
-        //public int Id { get; set; }
+        public int Id { get; set; } //HAY QUE QUITARLO
         public string Ruta { get; set; }
         #endregion
 

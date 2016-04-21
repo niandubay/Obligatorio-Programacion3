@@ -11,7 +11,7 @@ using Utilidades;
 
 namespace Repositorios
 {
-    public class RepositorioAnfitrionesSQL
+    public class RepositorioAnfitrionesSQL:IRepositorioAnfitriones
     {
         public bool Add(Anfitrion obj)
         {
@@ -21,7 +21,9 @@ namespace Repositorios
         public bool Delete(int id)
         {
             Anfitrion a = this.FindById(id);
-            return (a != null && a.Delete());
+            //return (a != null && a.Delete());
+            return false;
+
 
         }
 
@@ -73,7 +75,8 @@ namespace Repositorios
 
         public bool Update(Anfitrion obj)
         {
-            return obj != null && obj.Update();
+            // return obj != null && obj.Update();
+            return false;
         }
     }
 }

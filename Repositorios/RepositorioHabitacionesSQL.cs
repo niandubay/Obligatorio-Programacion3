@@ -11,7 +11,7 @@ using Utilidades;
 
 namespace Repositorios
 {
-    public class RepositorioHabitacionesSQL
+    public class RepositorioHabitacionesSQL:IRepositorioHabitaciones
     {
         public bool Add(Habitacion obj)
         {

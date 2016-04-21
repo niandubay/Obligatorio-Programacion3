@@ -61,19 +61,22 @@ namespace Repositorios
 
         public bool Add(RangoFechas obj)
         {
-            return obj != null && obj.Add();
+            //return obj != null && obj.Add();
+            return false;
         }
 
         public bool Delete(int id)
         {
             RangoFechas rf = this.FindById(id);
-            return (rf != null && rf.Delete());
+            //return (rf != null && rf.Delete());
+            return false;
 
         }
 
         public bool Update(RangoFechas obj)
         {
-            return obj != null && obj.Update();
+            //return obj != null && obj.Update();
+            return false;
         }
     }
 }

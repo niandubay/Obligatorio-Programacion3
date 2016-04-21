@@ -67,13 +67,15 @@ namespace Repositorios
         public bool Delete(int id)
         {
             RolesSistema RS = this.FindById(id);
-            return (RS != null && RS.Delete());
+            //return (RS != null && RS.Delete());
+            return false;
 
         }
 
         public bool Update(RolesSistema obj)
         {
-            return obj != null && obj.Update();
+            //return obj != null && obj.Update();
+            return false;
         }
     }
 }

@@ -11,7 +11,7 @@ using Utilidades;
 
 namespace Repositorios
 {
-    public class RepositorioHuespedesSQL
+    public class RepositorioHuespedesSQL:IRepositorioHuespedes
     {
         public List<Huesped> FindAll()
         {
@@ -67,13 +67,15 @@ namespace Repositorios
         public bool Delete(int id)
         {
             Huesped h = this.FindById(id);
-            return (h != null && h.Delete());
+            //return (h != null && h.Delete());
+            return false;
 
         }
 
         public bool Update(Huesped obj)
         {
-            return obj != null && obj.Update();
+            //return obj != null && obj.Update();
+            return false;
         }
     }
 }

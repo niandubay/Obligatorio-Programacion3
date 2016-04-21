@@ -11,11 +11,25 @@
     </asp:ContentPlaceHolder>
 </head>
 <body>
+    <form id="form1" runat="server">
+        <p>
+            <br />
+        </p>
     <div>
         <asp:ContentPlaceHolder ID="content" runat="server">
+            <asp:Menu ID="Menu1" runat="server" Orientation="Horizontal">
+                <Items>
+                    <asp:MenuItem NavigateUrl="~/AltaAlojamiento.aspx" Text="Alta Alojamientos" Value="Alta Alojamientos"></asp:MenuItem>
+                    <asp:MenuItem NavigateUrl="~/Pruebas.aspx" Text="Pruebas" Value="Pruebas"></asp:MenuItem>
+                </Items>
+            </asp:Menu>
+            <p>
+                <br />
+            </p>
         </asp:ContentPlaceHolder>
     </div>
     <script src="Scripts/jquery-1.9.1.js"></script>
     <script src="Scripts/bootstrap.js"></script>
+    </form>
 </body>
 </html>
