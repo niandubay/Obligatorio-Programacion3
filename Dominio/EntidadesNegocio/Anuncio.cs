@@ -42,7 +42,7 @@ namespace Dominio.EntidadesNegocio
                     cmd.Parameters.AddWithValue("@descripcion", this.Descripcion);
                     cn.Open();
                     int idAnuncio = Convert.ToInt32(cmd.ExecuteScalar());
-                    cmd.CommandText = "INSERT INTO HabitacionesAnuncio VALUES (@id_Anuncio,@id_Habitacion)";
+                    cmd.CommandText = "INSERT INTO HabitacionesAnuncio (id_anuncio,id_habitacion)VALUES (@id_Anuncio,@id_Habitacion)";
                     foreach (Habitacion unaH in this.Habitaciones)
                     {
                         cmd.Parameters.Clear();
@@ -51,13 +51,13 @@ namespace Dominio.EntidadesNegocio
                         cmd.ExecuteNonQuery();
                     }
                     // acá tenemos el Anuncio y su lista de habitaciones...
-                    cmd.CommandText = "INSERT INTO Foto VALUES (@ruta,@id_Anuncio)";
+                    cmd.CommandText = "INSERT INTO Foto (ruta,id_anuncio) VALUES (@ruta,@id_Anuncio)";
                     foreach (Foto unaF in this.Fotos){
                         cmd.Parameters.AddWithValue("@ruta", unaF.Ruta);
                         cmd.ExecuteNonQuery();
                     }
                     // acá ya tenemos también guardadas las fotos...
-                    cmd.CommandText = "INSERT INTO RangoFechaAnuncio VALUES (@fecha_ini,@fecha_fin,@id_Anuncio)";
+                    cmd.CommandText = "INSERT INTO RangoFechaAnuncio (fecha_ini,fecha_fin,id_anuncio) VALUES (@fecha_ini,@fecha_fin,@id_Anuncio)";
                     foreach (RangoFechas unRF in this.ListaRangos)
                     {
                         cmd.Parameters.AddWithValue("@fecha_ini", unRF.Fecha_ini);
