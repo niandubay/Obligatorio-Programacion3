@@ -15,14 +15,25 @@
     <br />
     <asp:Label ID="Label3" runat="server" Text="Listado de los Alojamientos"></asp:Label>
     <br />
-    <br />
     <asp:ListBox ID="lbxAlojamientos" runat="server" Height="200px" Width="100%"></asp:ListBox>
+    <br />
+    <br />
+    Un alojamiento especifico&nbsp;
+    <asp:TextBox ID="txtIdAlojamiento" runat="server"></asp:TextBox>
+    <br />
+    <asp:ListBox ID="lbxUnAlojamiento" runat="server"></asp:ListBox>
+    <br />
     <br />
     <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
     <br />
     <br />
     <br />
     <asp:Button ID="btnListar" runat="server" OnClick="btnListar_Click" Text="Button" />
+    <br />
+    <asp:LinkButton ID="LinkButton1" runat="server" OnClick="LinkButton1_Click">LinkButton</asp:LinkButton>
+    <br />
+    <br />
+    <br />
     <br />
 
 </asp:Content>

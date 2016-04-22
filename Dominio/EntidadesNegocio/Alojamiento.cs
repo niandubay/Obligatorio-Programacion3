@@ -16,10 +16,21 @@ namespace Dominio.EntidadesNegocio
         public string Tipo { get; set; }
         public Ubicacion Ubicacion { get; set;}
         public List<RangoPrecio> Precios_temporada { get; set; }
+
+        public string Mostrar
+        {
+            get {
+                string pt = "";
+                foreach(RangoPrecio unR in Precios_temporada)
+                {
+                    pt += unR.ToString() + "\n";
+                }
+                return this.ToString() + "--" + this.Ubicacion.ToString() + "--" + pt; }
+        }
         #endregion
 
         #region Cadenas de comando para ACTIVE RECORD
-        private string cadenaInsert = "INSERT INTO Alojamiento (tipo) VALUES (@tipo); SELECT CAST(SCOPE_IDENTIY() AS INT);";
+        private string cadenaInsert = "INSERT INTO Alojamiento (tipo,idUbicacion) VALUES (@tipo,@idUbicacion); SELECT CAST(SCOPE_IDENTITY() AS INT);";
         private string cadenaUpdate = "UPDATE  Alojamiento SET tipo=@tipo WHERE id=@id";
         private string cadenaDelete = "DELETE  Alojamiento WHERE id=@id";
         #endregion
@@ -37,6 +48,7 @@ namespace Dominio.EntidadesNegocio
 
                     // acá va el resto de parametros que vamos a insertar...
                     cmd.Parameters.AddWithValue("@tipo", this.Tipo);
+                    cmd.Parameters.AddWithValue("@idUbicacion", this.Ubicacion.Id);
                     //abrimos la coneccion
                     cn.Open();
 
@@ -44,7 +56,8 @@ namespace Dominio.EntidadesNegocio
                     trn = cn.BeginTransaction();
                     cmd.Transaction = trn;
                     int idAlojamiento = Convert.ToInt32(cmd.ExecuteScalar());
-                    cmd.CommandText = "INSERT INTO RangoPrecio (fecha_inicio,fecha_fin,variacion_precio,id_alojamiento) VALUES (@fecha_inicio,@fecha_fin,@variacion_precio,@id_alojamiento)";
+                    this.Id = idAlojamiento;
+                    cmd.CommandText = "INSERT INTO RangoPrecio (fecha_ini,fecha_fin,variacion_precio,id_alojamiento) VALUES (@fecha_inicio,@fecha_fin,@variacion_precio,@id_alojamiento)";
                     foreach (RangoPrecio unR in this.Precios_temporada)
                     {
                         cmd.Parameters.Clear();
@@ -55,7 +68,7 @@ namespace Dominio.EntidadesNegocio
                         cmd.ExecuteNonQuery();
                     }
                     // Agregar la ubicacion 
-                    cmd.CommandText = "INSERT INTO Ubicacion (ciudad,barrio,dir_linea1,dir_linea2) VALUES (@ciudad,@barrio,@dirLinea1,@dirLinea2); SELECT CAST(SCOPE_IDENTIY() AS INT);";
+                    cmd.CommandText = "INSERT INTO Ubicacion (ciudad,barrio,dirLinea1,dirLinea2) VALUES (@ciudad,@barrio,@dirLinea1,@dirLinea2); SELECT CAST(SCOPE_IDENTITY() AS INT);";
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@ciudad", this.Ubicacion.Ciudad);
                     cmd.Parameters.AddWithValue("@barrio", this.Ubicacion.Barrio);
@@ -63,10 +76,13 @@ namespace Dominio.EntidadesNegocio
                     cmd.Parameters.AddWithValue("@dirLinea2", this.Ubicacion.DireccionLinea2);
                     // me guardo el id de la ubicación insertada
                     int idUbicacion = Convert.ToInt32(cmd.ExecuteScalar());
+                    this.Ubicacion.Id = idUbicacion;
                     // me agrego como parametro esa ubicacion
-                    cmd.Parameters.AddWithValue("@idUbicacion", idUbicacion);
+                    
                     // le hago un update al alojamiento con el idUbicacion(foreign key)..
-                    cmd.CommandText = "UPDATE Alojamiento SET idUbicacion = @idUbicacion WHERE idAlojamiento = @id_alojamiento;";
+                    cmd.CommandText = "UPDATE Alojamiento SET idUbicacion = @idUbicacion WHERE id = @id_alojamiento;";
+                    cmd.Parameters.AddWithValue("@idUbicacion", idUbicacion);
+                    cmd.Parameters.AddWithValue("@id_alojamiento", this.Id);
                     cmd.ExecuteNonQuery();
                     trn.Commit();
                     cmd.Parameters.Clear();
@@ -138,7 +154,7 @@ namespace Dominio.EntidadesNegocio
         {
             if (dr != null)
             {
-                unR.Fecha_inicio = dr.GetDateTime(dr.GetOrdinal("fecha_inicio"));
+                unR.Fecha_inicio = dr.GetDateTime(dr.GetOrdinal("fecha_ini"));
                 unR.Fecha_fin = dr.GetDateTime(dr.GetOrdinal("fecha_fin"));
                 unR.Variacion_precio = dr.GetDecimal(dr.GetOrdinal("variacion_precio"));
                 this.Id = Convert.ToInt32(dr["id"]);

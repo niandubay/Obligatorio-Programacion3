@@ -52,8 +52,8 @@ namespace Repositorios
 
         public Alojamiento FindById(int id)
         {
-            //string cadenaFind = "SELECT id,tipo,cupo_max FROM Alojamiento WHERE id=@id";
-            string cadenaFind = "SELECT Alojamiento.*, Ubicacion.ciudad, Ubicacion.barrio, Ubicacion.dirLinea1, Ubicacion.dirLinea2id,tipo,cupo_max FROM Alojamiento, Ubicacion WHERE Alojamiento.id_Ubicacion = Ubicacion.id AND Alojamiento.id = @id";
+            string cadenaFind = "SELECT Alojamiento.*, Ubicacion.ciudad, Ubicacion.barrio, Ubicacion.dirLinea1, Ubicacion.dirLinea2 FROM Alojamiento, Ubicacion WHERE Alojamiento.idUbicacion = Ubicacion.id AND Alojamiento.id = @id";
+
             SqlConnection cn = BdSQL.Conectar();
             List<RangoPrecio> precios_temporada = new List<RangoPrecio>();
             Alojamiento unA = null;
@@ -76,6 +76,7 @@ namespace Repositorios
                         DireccionLinea2 = reader["dirLinea2"].ToString()
                     };
                 }
+                reader.Close();
                 //Cargo los elementos de la lista de rango precios
                 cmd.CommandText = "SELECT * FROM RangoPrecio WHERE id_alojamiento = @id";
                 reader = cmd.ExecuteReader();
@@ -86,17 +87,7 @@ namespace Repositorios
                     precios_temporada.Add(unR);
                 }
                 unA.Precios_temporada = precios_temporada;
-
-                // traigo la ubicacion 
-                cmd.CommandText = "SELECT * FROM Ubicacion WHERE id_alojamiento = @id";
-                reader = cmd.ExecuteReader();
-                if (reader != null && reader.Read())
-                {
-                    Ubicacion unaU = new Ubicacion();
-                    unaU.Load(reader);
-                    unA.Ubicacion = unaU;   
-                }
-
+                reader.Close();
                 return unA;
             }
             catch(Exception ex)

@@ -44,14 +44,23 @@ namespace AppWeb
             IRepositorioAlojamientos repoAlos = FabricaReposBienvenidosUY.CrearRepositorioAlojamiento();
             List<Alojamiento> alojamientos = new List<Alojamiento>();
             alojamientos = repoAlos.FindAll();
+            Alojamiento unA = repoAlos.FindById(Convert.ToInt32(txtIdAlojamiento.Text));
+            Session["alojamientos"] = alojamientos;
+
             if (alojamientos != null)
             {
                 this.lbxAlojamientos.DataSource = alojamientos;
                 this.lbxAlojamientos.DataBind();
+                Label1.Text = unA.Mostrar;
             }
             else
                 Label1.Text = "No hay organizaciones para mostrar.";
 
+        }
+
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/AltaAlojamiento.aspx");
         }
     }
 }
