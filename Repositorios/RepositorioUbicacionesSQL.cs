@@ -53,6 +53,7 @@ namespace Repositorios
                     {
                         unaU = new Ubicacion();
                         unaU.Load(reader);
+                        unaU.Id = id;
                     }
                 }
             }

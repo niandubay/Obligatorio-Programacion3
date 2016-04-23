@@ -14,7 +14,6 @@ namespace Dominio.EntidadesNegocio
         #region Properties
         public string Descripcion { get; set; }
         public string Nombre { get; set; }
-        public bool Activo { get; set; }
         public int Id { get; set; }
         #endregion
 
@@ -35,7 +34,6 @@ namespace Dominio.EntidadesNegocio
                     {
                         cmd.Parameters.AddWithValue("@nombre", this.Nombre);
                         cmd.Parameters.AddWithValue("@descripcion", this.Descripcion);
-                        cmd.Parameters.AddWithValue("@activo", this.Activo);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
                         return afectadas == 1;
@@ -54,7 +52,6 @@ namespace Dominio.EntidadesNegocio
                     {
                         cmd.Parameters.AddWithValue("@nombre", this.Nombre);
                         cmd.Parameters.AddWithValue("@descripcion", this.Descripcion);
-                        cmd.Parameters.AddWithValue("@activo", this.Activo);
                         cmd.Parameters.AddWithValue("@id", this.Id);
                         cn.Open();
                         int afectadas = cmd.ExecuteNonQuery();
@@ -85,7 +82,6 @@ namespace Dominio.EntidadesNegocio
                 //@nombre,@descripcion,@activo
                 this.Nombre = dr["nombre"].ToString();
                 this.Descripcion = dr["descripcion"].ToString();
-                this.Activo = Convert.ToBoolean(dr["activo"].ToString());
                 this.Id = Convert.ToInt32(dr["id"]);
             }
         }
@@ -101,7 +97,7 @@ namespace Dominio.EntidadesNegocio
         #region Redefiniciones de object
         public override string ToString()
         {
-            return this.Id + " - Nombre: " + this.Nombre + " - Descripcion: " + this.Descripcion + " - Activo: " + this.Activo.ToString();
+            return this.Id + " - Nombre: " + this.Nombre + " - Descripcion: " + this.Descripcion;
         }
         #endregion
     }

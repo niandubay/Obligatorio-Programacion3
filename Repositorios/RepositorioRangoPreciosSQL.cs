@@ -40,7 +40,7 @@ namespace Repositorios
 
         public RangoPrecio FindById(int id)
         {
-            string cadenaFind = "SELECT fecha_inicio, fecha_fin, variacion_precio FROM RangoPrecio WHERE id = @id";
+            string cadenaFind = "SELECT fecha_ini, fecha_fin, variacion_precio FROM RangoPrecio WHERE id = @id";
             RangoPrecio unRP = null;
             using (SqlConnection cn = BdSQL.Conectar())
             {
@@ -53,6 +53,7 @@ namespace Repositorios
                     {
                         unRP = new RangoPrecio();
                         unRP.Load(reader);
+                        unRP.Id = id;
                     }
                 }
             }

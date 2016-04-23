@@ -59,6 +59,15 @@ namespace FabricaRepositorios
                 return null;
         }
 
+        public static Dominio.InterfacesRepositorio.IRepositorioServicios
+            CrearRepositorioServicio()
+        {
+            string tipo = LeerTipoDesdeConfiguracion();
+            if (tipo == "sql")
+                return new Repositorios.RepositorioServiciosSQL();
+            else
+                return null;
+        }
         //FALTA EL RESTO DE LOS METODOS PARA INICIALIZAR LOS REPOS 
 
 

@@ -84,6 +84,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Prueba Habitacion.aspx" />
     <Content Include="Pruebas.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -129,6 +130,13 @@
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Prueba Habitacion.aspx.cs">
+      <DependentUpon>Prueba Habitacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Prueba Habitacion.aspx.designer.cs">
+      <DependentUpon>Prueba Habitacion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pruebas.aspx.cs">
       <DependentUpon>Pruebas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

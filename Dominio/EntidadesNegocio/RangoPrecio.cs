@@ -82,8 +82,6 @@ namespace Dominio.EntidadesNegocio
         {
             if (dr != null)
             {
-                //@fecha_ini,@fecha_fin,@variacion_precio
-                this.Id = Convert.ToInt32(dr["id"].ToString());
                 this.Fecha_inicio = Convert.ToDateTime(dr["fecha_ini"].ToString());
                 this.Fecha_fin = Convert.ToDateTime(dr["fecha_fin"].ToString());
                 this.Variacion_precio = Convert.ToDecimal(dr["variacion_precio"].ToString());

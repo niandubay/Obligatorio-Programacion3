@@ -68,8 +68,10 @@ namespace Repositorios
                 {
                     unA = new Alojamiento();
                     unA.Load(reader);
+                    unA.Id = id;
                     unA.Ubicacion = new Ubicacion
                     {
+                        Id = Convert.ToInt32(reader["idUbicacion"].ToString()),
                         Ciudad = reader["ciudad"].ToString(),
                         Barrio = reader["barrio"].ToString(),
                         DireccionLinea1 = reader["dirLinea1"].ToString(),

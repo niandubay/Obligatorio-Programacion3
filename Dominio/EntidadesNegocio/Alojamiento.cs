@@ -146,8 +146,9 @@ namespace Dominio.EntidadesNegocio
         {
             if (dr != null)
             {
-                this.Tipo = dr["tipo"].ToString();
-                this.Id = Convert.ToInt32(dr["id"]);
+                this.Tipo = dr["tipo"].ToString();               
+                this.Ubicacion = null;
+                this.Precios_temporada = null;
             }
         }
         public void loadRangoPrecio(RangoPrecio unR, IDataRecord dr)
@@ -157,7 +158,7 @@ namespace Dominio.EntidadesNegocio
                 unR.Fecha_inicio = dr.GetDateTime(dr.GetOrdinal("fecha_ini"));
                 unR.Fecha_fin = dr.GetDateTime(dr.GetOrdinal("fecha_fin"));
                 unR.Variacion_precio = dr.GetDecimal(dr.GetOrdinal("variacion_precio"));
-                this.Id = Convert.ToInt32(dr["id"]);
+                unR.Id = Convert.ToInt32(dr["id"]);
             }
         }
         #endregion

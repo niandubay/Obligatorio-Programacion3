@@ -113,10 +113,15 @@ namespace Dominio.EntidadesNegocio
         {
             if (dr != null)
             {
-                this.Baño_Privado = Convert.ToBoolean(dr["baño_privado"].ToString());
+                if (dr["banio_privado"].ToString() == "si") {
+                    this.Baño_Privado = true;
+                } else {
+                    this.Baño_Privado = false;
+                }
                 this.Camas = Convert.ToInt32(dr["camas"].ToString());
                 this.Cupo_max = Convert.ToInt32(dr["cupo_max"].ToString());
                 this.Precio_base = Convert.ToDecimal(dr["precio_base"].ToString());
+                this.Servicios = null;
                 this.Id = Convert.ToInt32(dr["id"]);
                 this.Alojamiento = null;
             }
@@ -133,7 +138,15 @@ namespace Dominio.EntidadesNegocio
         #region Redefiniciones de object
         public override string ToString()
         {
-            return this.Id.ToString() + " - BañoPriv: " + this.Baño_Privado.ToString() + " - Camas: " + this.Camas.ToString() + " - Precio_base: " + this.Precio_base.ToString();
+            string servicios = "";
+            if (this.Servicios != null)
+            {
+                foreach (Servicio unS in this.Servicios)
+                {
+                    servicios += unS.Nombre + " - ";
+                }
+            }
+            return this.Id.ToString() + " - BañoPriv: " + this.Baño_Privado.ToString() + " - Camas: " + this.Camas.ToString() + " - Precio_base: " + this.Precio_base.ToString() + " - Servicios:" + servicios;
         }
         #endregion
     }

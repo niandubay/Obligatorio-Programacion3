@@ -15,7 +15,7 @@ namespace Repositorios
     {
         public List<Servicio> FindAll()
         {
-            string cadenaFindAll = "SELECT nombre, descripcion, activo FROM Servicio";
+            string cadenaFindAll = "SELECT id, nombre, descripcion FROM Servicio";
             List<Servicio> listaServicios = new List<Servicio>();
             using (SqlConnection cn = BdSQL.Conectar())
             {
@@ -40,7 +40,7 @@ namespace Repositorios
 
         public Servicio FindById(int id)
         {
-            string cadenaFind = "SELECT nombre, descripcion, activo FROM Servicio WHERE id = @id";
+            string cadenaFind = "SELECT nombre, descripcion FROM Servicio WHERE id = @id";
             Servicio unS = null;
             using (SqlConnection cn = BdSQL.Conectar())
             {

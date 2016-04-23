@@ -7,10 +7,24 @@
     <asp:ListBox ID="lstUbi" runat="server" Height="200px" Width="100%"></asp:ListBox>
 
     <br />
+    buscar ubicacion por ID:
+    <asp:TextBox ID="txtUBI" runat="server"></asp:TextBox>
+    <asp:Button ID="btnUBI" runat="server" OnClick="btnUBI_Click" Text="Button" />
+    <br />
+    <asp:Label ID="lblUBI" runat="server"></asp:Label>
+    <br />
+    <br />
     <br />
     <asp:Label ID="Label2" runat="server" Text="Lista Los Rango Precio"></asp:Label>
     <br />
     <asp:ListBox ID="lbxRangos" runat="server" Height="200px" Width="100%"></asp:ListBox>
+    <br />
+    buscar rango precio por ID:
+    <asp:TextBox ID="txtRP" runat="server"></asp:TextBox>
+    <asp:Button ID="btnBuscarRP" runat="server" OnClick="btnBuscarRP_Click" Text="Button" />
+    <br />
+    <asp:Label ID="lblRangoPrecio" runat="server"></asp:Label>
+    <br />
     <br />
     <br />
     <asp:Label ID="Label3" runat="server" Text="Listado de los Alojamientos"></asp:Label>
@@ -20,8 +34,9 @@
     <br />
     Un alojamiento especifico&nbsp;
     <asp:TextBox ID="txtIdAlojamiento" runat="server"></asp:TextBox>
+    &nbsp;<asp:Button ID="btnALOID" runat="server" OnClick="btnALOID_Click" Text="Button" />
     <br />
-    <asp:ListBox ID="lbxUnAlojamiento" runat="server"></asp:ListBox>
+    <asp:Label ID="lblALOXID" runat="server"></asp:Label>
     <br />
     <br />
     <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
