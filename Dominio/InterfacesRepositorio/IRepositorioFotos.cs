@@ -8,7 +8,7 @@ using Dominio.InterfacesRepositorio;
 
 namespace Dominio.InterfacesRepositorio
 {
-    public interface IRepositorioFotos : IRepositorio<Foto>
+    public interface IRepositorioFotos 
     {
     }
 }

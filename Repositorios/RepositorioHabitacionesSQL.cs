@@ -140,6 +140,60 @@ namespace Repositorios
             return h;
         }
 
+        public List<Habitacion> FindHabitacion(int id_persona)
+        {
+            string cadenaFind = "select H.* from Habitacion H,Alojamiento A, Persona P where H.id_alojamiento = A.id and A.id_persona = P.id and P.id = @id";
+            List<Habitacion> habitaciones_disponibles = new List<Habitacion>();
+
+            using (SqlConnection cn = BdSQL.Conectar())
+            {
+                using (SqlCommand cmd = new SqlCommand(cadenaFind, cn))
+                {
+                    cmd.Parameters.AddWithValue("@id", id_persona);
+                    cn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader != null)
+                    {
+                        while (reader.Read())
+                        {
+                            Habitacion h = new Habitacion();
+                            h.Load(reader);
+                            habitaciones_disponibles.Add(h);
+                        }
+                    }
+                    return habitaciones_disponibles;
+                }// cierro using
+            }// cierro using 
+        }
+
+        public List<Habitacion> FindHabitacionDisponible(DateTime f_ini, DateTime f_fin, int cupo_max)
+        {
+            string cadenaFind = "SELECT Habitacion.id AS id_habitacion FROM Habitacion, RangoPrecio WHERE Habitacion.id_alojamiento = RangoPrecio.id_alojamiento AND Habitacion.cupo_max = @cupo AND RangoPrecio.fecha_ini = @f_ini AND RangoPrecio.fecha_fin = @f_fin";
+            int id_habitacion = 0;
+            List<Habitacion> habitaciones_disponibles = new List<Habitacion>();
+            using (SqlConnection cn = BdSQL.Conectar())
+            {
+                using (SqlCommand cmd = new SqlCommand(cadenaFind, cn))
+                {
+                    cmd.Parameters.AddWithValue("@cupo", f_ini);
+                    cmd.Parameters.AddWithValue("@f_ini", f_fin);
+                    cmd.Parameters.AddWithValue("@f_fin", cupo_max);
+                    cn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader != null )
+                    {
+                        while(reader.Read())
+                        {
+                            id_habitacion = Convert.ToInt32(reader["id_habitacion"].ToString());
+                            habitaciones_disponibles.Add(this.FindById(id_habitacion));
+
+                        }
+                    }
+                    return habitaciones_disponibles;
+                }// cierro using
+            }// cierro using 
+        }
+
         public bool Update(Habitacion obj)
         {
             return obj != null && obj.Update();

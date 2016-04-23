@@ -28,7 +28,7 @@ namespace Repositorios
                         while (reader.Read())
                         {
                             Foto unaF = new Foto();
-                            unaF.Load(reader);
+                            //unaF.Load(reader);
                             if (unaF.Validar())
                                 listaFotos.Add(unaF);
                         }
@@ -52,7 +52,7 @@ namespace Repositorios
                     if (reader != null && reader.Read())
                     {
                         unaF = new Foto();
-                        unaF.Load(reader);
+                        //unaF.Load(reader);
                     }
                 }
             }

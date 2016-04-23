@@ -8,7 +8,7 @@ using Dominio.InterfacesRepositorio;
 
 namespace Dominio.InterfacesRepositorio
 {
-    public interface IRepositorioRangoFechas : IRepositorio<RangoFechas>
+    public interface IRepositorioRangoFechas 
     {
     }
 }

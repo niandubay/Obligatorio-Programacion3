@@ -66,14 +66,16 @@ namespace Repositorios
 
         public bool Delete(int id)
         {
-            Persona p = this.FindById(id);
-            return (p != null && p.Delete());
+            //Persona p = this.FindById(id);
+            //return (p != null && p.Delete());
+            return true;
 
         }
 
         public bool Update(Persona obj)
         {
-            return obj != null && obj.Update();
+            //return obj != null && obj.Update();
+            return true;
         }
     }
 }

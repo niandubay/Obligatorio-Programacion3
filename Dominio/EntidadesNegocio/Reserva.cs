@@ -14,7 +14,7 @@ namespace Dominio.EntidadesNegocio
         #region Properties
         public DateTime Fecha_ini { get; set; }
         public DateTime Fecha_fin { get; set; }
-        //public List<Habitacion> Habitaciones { get; set; }
+        public List<Habitacion> Habitaciones { get; set; }
         public int Id { get; set; }
         #endregion
 

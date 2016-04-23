@@ -28,7 +28,7 @@ namespace Repositorios
                         while (reader.Read())
                         {
                             RangoFechas unRF = new RangoFechas();
-                            unRF.Load(reader);
+                            //unRF.Load(reader);
                             if (unRF.Validar())
                                 listaRangoFechass.Add(unRF);
                         }
@@ -52,7 +52,7 @@ namespace Repositorios
                     if (reader != null && reader.Read())
                     {
                         unRF = new RangoFechas();
-                        unRF.Load(reader);
+                        //unRF.Load(reader);
                     }
                 }
             }

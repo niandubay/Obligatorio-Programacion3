@@ -9,10 +9,9 @@ using System.Data.SqlClient;
 
 namespace Dominio.EntidadesNegocio
 {
-    public class Foto : IEntity
+    public class Foto
     {
         #region Properties
-        public int Id { get; set; } //HAY QUE QUITARLO
         public string Ruta { get; set; }
         #endregion
 
@@ -72,14 +71,14 @@ namespace Dominio.EntidadesNegocio
         //        }
         //    }
         //}
-        public void Load(IDataRecord dr)
-        {
-            if (dr != null)
-            {
-                this.Ruta = dr["ruta"].ToString();
-                //this.Id = Convert.ToInt32(dr["id"]);
-            }
-        }
+        //public void Load(IDataRecord dr)
+        //{
+        //    if (dr != null)
+        //    {
+        //        this.Ruta = dr["ruta"].ToString();
+        //        //this.Id = Convert.ToInt32(dr["id"]);
+        //    }
+        //}
         #endregion
 
         #region Validaciones

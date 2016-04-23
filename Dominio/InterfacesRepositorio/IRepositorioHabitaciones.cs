@@ -10,5 +10,7 @@ namespace Dominio.InterfacesRepositorio
 {
     public interface IRepositorioHabitaciones:IRepositorio<Habitacion>
     {
+        List<Habitacion> FindHabitacion(int id_persona);
+
     }
 }
